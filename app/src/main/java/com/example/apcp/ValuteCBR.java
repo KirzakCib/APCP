@@ -6,7 +6,7 @@ import org.simpleframework.xml.Element;
 import org.simpleframework.xml.Root;
 
 @Root(name = "Valute", strict=false)
-public class Article {
+public class ValuteCBR {
 
     @Attribute(name="ID")
     private String id;

@@ -8,7 +8,7 @@ import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Root;
 
 @Root(name="ValCurs", strict = false)
-public class RSSFeed {
+public class Parser {
 
     @Attribute(name = "Date")
     private String date;
@@ -22,14 +22,14 @@ public class RSSFeed {
     }
 
     @ElementList(name="Valute", inline=true)
-    private List<Article> articleList;
+    private List<ValuteCBR> valuteCBRList;
 
 
-    public List<Article> getArticleList() {
-        return articleList;
+    public List<ValuteCBR> getValuteCBRList() {
+        return valuteCBRList;
     }
 
-    public void setArticleList(List<Article> articleList) {
-        this.articleList = articleList;
+    public void setValuteCBRList(List<ValuteCBR> valuteCBRList) {
+        this.valuteCBRList = valuteCBRList;
     }
 }

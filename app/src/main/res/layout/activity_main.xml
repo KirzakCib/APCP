@@ -48,20 +48,41 @@
                 android:textSize="20dp"
                 android:text="Цена:"
                 android:layout_margin="5dp"/>
-            <TextView
-                android:id="@+id/day"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="20dp"
-                android:text="24h:"
-                android:layout_margin="5dp"/>
-            <TextView
-                android:id="@+id/week"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="20dp"
+                    android:text="24h:"
+                    android:layout_margin="5dp"/>
+
+                <TextView
+                    android:id="@+id/day"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="20dp"
+                    android:layout_margin="5dp"/>
+            </LinearLayout>
+            <LinearLayout
                 android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+                <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="20dp"
                 android:text="7d:"
                 android:layout_margin="5dp"/>
+                <TextView
+                    android:id="@+id/week"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="20dp"
+                    android:layout_margin="5dp"/>
+            </LinearLayout>
 
         </LinearLayout>
 
