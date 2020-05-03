@@ -6,7 +6,8 @@
 
 <application
     android:allowBackup="true"
-    android:icon="@drawable/price"
+    android:icon="@mipmap/ic_apcp"
+    android:roundIcon="@mipmap/ic_apcp_round"
     android:label="@string/app_name"
     android:supportsRtl="true"
     android:theme="@style/AppTheme"
