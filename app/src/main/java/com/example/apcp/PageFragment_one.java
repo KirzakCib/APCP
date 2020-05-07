@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.Html;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -240,7 +241,7 @@ public class PageFragment_one extends Fragment {
                                 mani7d = item.findViewById(R.id.week);
                                 nameCoin.setText(valuteCBR.getName());
                                 nominalCoin.append(" " + valuteCBR.getNominal());
-                                maniCoin.append(" " + String.valueOf(valuteCBR.getValue()).replaceAll(",", "."));
+                                maniCoin.append(" " + String.valueOf(valuteCBR.getValue()).replaceAll(",", ".") + " " + Html.fromHtml("&#x20bd"));
                                 double h, d;
                                 h = 100 - (Double.valueOf(mani_1[k].replaceAll(",", ".")) / (Double.valueOf(valuteCBR.getValue().replaceAll(",", ".")) / 100));
                                 d = 100 - (Double.valueOf(mani_2[k].replaceAll(",", ".")) / (Double.valueOf(valuteCBR.getValue().replaceAll(",", ".")) / 100));
@@ -308,64 +309,64 @@ public class PageFragment_one extends Fragment {
 
         }
 
-        public void makeCall (Call < NewsParser > call_3) {
-
-            call_3.enqueue(new Callback<NewsParser>() {
-                @SuppressLint("StaticFieldLeak")
-
-                @Override
-                public void onResponse(Call<NewsParser> call_3, Response<NewsParser> response) {
-                    if (response.isSuccessful()) {
-
-                        NewsParser rss = response.body();
-
-                        LinearLayout linLayout = (LinearLayout) getActivity().findViewById(R.id.linLay);
-                        LayoutInflater ltInflater = getLayoutInflater();
-
-                        int k = 0;
-                        for (NewsItem newsItem : rss.getNewsItems()) {
-                            if (k == 20) {
-                                continue;
-                            }
-                            View item = ltInflater.inflate(R.layout.activity_news, linLayout, false);
-                            news = item.findViewById(R.id.list_item);
-                            dateNews = item.findViewById(R.id.da);
-                            news.setText(newsItem.getTitle());
-                            dateNews.setText(newsItem.getDate());
-                            item.getLayoutParams().width = LinearLayout.LayoutParams.MATCH_PARENT;
-                            linLayout.addView(item);
-                            item.setTag(k);
-                            k++;
-//                                progressDialog.setIndeterminate(false);
-//                                progressDialog.incrementProgressBy(1);
-//                                progressDialog.setProgress(5);
-                        }
-                        progressDialog.dismiss();
-                    }
-                }
-
-
-                @Override
-                public void onFailure(Call<NewsParser> call_3, Throwable t) {
-//                    LinearLayout linLayout = (LinearLayout) getActivity().findViewById(R.id.linLay);
-//                    LayoutInflater ltInflater = getLayoutInflater();
+//        public void makeCall (Call < NewsParser > call_3) {
 //
-//                    View item = ltInflater.inflate(R.layout.activity_error, linLayout, false);
-//                    text = item.findViewById(R.id.text_item);
-//                    text.setText("Error: \n" + "Пожауйста, проверьте Ваше подключение к сети и перезапустите приложение." +
-//                            "Если у Вас не получается решить проблему, пишите: Kirzak899@gmail.com \n" + "С уважением.");
-//                    item.getLayoutParams().width = LinearLayout.LayoutParams.MATCH_PARENT;
-//                    linLayout.addView(item);
-                    progressDialog.dismiss();
-                    String tx = "Пожауйста, проверьте Ваше подключение к сети и перезапустите приложение.\nЕсли у Вас не получается решить проблему, пишите: Kirzak899@gmail.com\nС уважением.";
-                    Toast tool = Toast.makeText(getActivity(),tx,Toast.LENGTH_LONG);
-                    tool.setGravity(Gravity.CENTER,0,0);
-                    tool.show();
+//            call_3.enqueue(new Callback<NewsParser>() {
+//                @SuppressLint("StaticFieldLeak")
+//
+//                @Override
+//                public void onResponse(Call<NewsParser> call_3, Response<NewsParser> response) {
+//                    if (response.isSuccessful()) {
+//
+//                        NewsParser rss = response.body();
+//
+//                        LinearLayout linLayout = (LinearLayout) getActivity().findViewById(R.id.linLay);
+//                        LayoutInflater ltInflater = getLayoutInflater();
+//
+//                        int k = 0;
+//                        for (NewsItem newsItem : rss.getNewsItems()) {
+//                            if (k == 20) {
+//                                continue;
+//                            }
+//                            View item = ltInflater.inflate(R.layout.activity_news, linLayout, false);
+//                            news = item.findViewById(R.id.list_item);
+//                            dateNews = item.findViewById(R.id.da);
+//                            news.setText(newsItem.getTitle());
+//                            dateNews.setText(newsItem.getDate());
+//                            item.getLayoutParams().width = LinearLayout.LayoutParams.MATCH_PARENT;
+//                            linLayout.addView(item);
+//                            item.setTag(k);
+//                            k++;
+////                                progressDialog.setIndeterminate(false);
+////                                progressDialog.incrementProgressBy(1);
+////                                progressDialog.setProgress(5);
+//                        }
+//                        progressDialog.dismiss();
+//                    }
+//                }
 
-                }
-            });
 
-        }
+//                @Override
+//                public void onFailure(Call<NewsParser> call_3, Throwable t) {
+////                    LinearLayout linLayout = (LinearLayout) getActivity().findViewById(R.id.linLay);
+////                    LayoutInflater ltInflater = getLayoutInflater();
+////
+////                    View item = ltInflater.inflate(R.layout.activity_error, linLayout, false);
+////                    text = item.findViewById(R.id.text_item);
+////                    text.setText("Error: \n" + "Пожауйста, проверьте Ваше подключение к сети и перезапустите приложение." +
+////                            "Если у Вас не получается решить проблему, пишите: Kirzak899@gmail.com \n" + "С уважением.");
+////                    item.getLayoutParams().width = LinearLayout.LayoutParams.MATCH_PARENT;
+////                    linLayout.addView(item);
+//                    progressDialog.dismiss();
+//                    String tx = "Пожауйста, проверьте Ваше подключение к сети и перезапустите приложение.\nЕсли у Вас не получается решить проблему, пишите: Kirzak899@gmail.com\nС уважением.";
+//                    Toast tool = Toast.makeText(getActivity(),tx,Toast.LENGTH_LONG);
+//                    tool.setGravity(Gravity.CENTER,0,0);
+//                    tool.show();
+//
+//                }
+//            });
+//
+//        }
 
 
 //    @Override

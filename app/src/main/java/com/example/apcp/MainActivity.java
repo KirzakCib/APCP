@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager.widget.ViewPager.OnPageChangeListener;
 
 import com.google.android.material.tabs.TabLayout;
 
@@ -30,10 +31,12 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
+import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import java.text.DateFormat;
@@ -224,6 +227,7 @@ import retrofit2.converter.simplexml.SimpleXmlConverterFactory;
 public class MainActivity extends AppCompatActivity {
     private TabLayout tabLayout;
     private ViewPager viewPager;
+    ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -233,14 +237,41 @@ public class MainActivity extends AppCompatActivity {
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         setupViewPager(viewPager);
 
+
+
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
+
+
+//        viewPager.setOnPageChangeListener(new OnPageChangeListener() {
+//            @Override
+//            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+//            }
+//
+//            @Override
+//            public void onPageSelected(int position) {
+////            PageFragment_two pageFragment_two = new PageFragment_two();
+//////            pageFragment_two.setProgressDialog();
+//                progressDialog = new ProgressDialog(getApplicationContext());
+//                progressDialog.setTitle("Пожалуйста подождите");
+//                progressDialog.setMessage("Загрузка данных...");
+//                progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+//                //progressDialog.setMax(20);
+//                progressDialog.setIndeterminate(true);
+//                progressDialog.show();
+//            }
+//
+//            @Override
+//            public void onPageScrollStateChanged(int state) {
+//
+//            }
+//        });
     }
 
     private void setupViewPager(ViewPager viewPager) {
         FragmentAdapter adapter = new FragmentAdapter(getSupportFragmentManager());
-        adapter.addFragment(new PageFragment_one(), "КУРСЫ ВАЛЮТ");
         adapter.addFragment(new PageFragment_two(), "НОВОСТИ");
+        adapter.addFragment(new PageFragment_one(), "КУРСЫ ВАЛЮТ");
         viewPager.setAdapter(adapter);
     }
 
