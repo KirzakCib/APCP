@@ -22,21 +22,23 @@ class MySimpleAdapter extends SimpleAdapter {
     @Override
     public void setViewText(TextView v, String text) {
         super.setViewText(v, text);
-        if(v.getId() == R.id.day){
-            if(text.substring(0,3).equals(" - "))
+        if (v.getId() == R.id.day) {
+            if (text.substring(0, 3).equals(" - ")) {
                 v.setTextColor(Color.RED);
-            if(text.substring(0,3).equals(" + "))
+            } else if (text.substring(0, 3).equals(" + ")) {
                 v.setTextColor(Color.GREEN);
-            if(!(text.substring(0,3).equals(" - ") && !(text.substring(0,3).equals(" + "))))
+            } else {
                 v.setTextColor(Color.GRAY);
+            }
         }
-        if(v.getId() == R.id.week){
-            if(text.substring(0,3).equals(" - "))
-            v.setTextColor(Color.RED);
-            if(text.substring(0,3).equals(" + "))
+        if (v.getId() == R.id.week) {
+            if (text.substring(0, 3).equals(" - ")) {
+                v.setTextColor(Color.RED);
+            } else if (text.substring(0, 3).equals(" + ")) {
                 v.setTextColor(Color.GREEN);
-            if(!(text.substring(0,3).equals(" - ") && !(text.substring(0,3).equals(" + "))))
+            } else {
                 v.setTextColor(Color.GRAY);
+            }
         }
     }
 }
