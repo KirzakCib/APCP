@@ -108,15 +108,15 @@ public class Dollar extends AppCompatActivity {
                     }
                     GraphView graph = new GraphView(Dollar.this);
                     LineGraphSeries<DataPoint> series = new LineGraphSeries<DataPoint>(new DataPoint[] {
-                            new DataPoint(0, val[k-1]),
-                            new DataPoint(1, val[k-2]),
-                            new DataPoint(2, val[k-3]),
-                            new DataPoint(3, val[k-4]),
+                            new DataPoint(0, val[k-9]),
+                            new DataPoint(1, val[k-8]),
+                            new DataPoint(2, val[k-7]),
+                            new DataPoint(3, val[k-6]),
                             new DataPoint(4, val[k-5]),
-                            new DataPoint(5, val[k-6]),
-                            new DataPoint(6, val[k-7]),
-                            new DataPoint(7, val[k-8]),
-                            new DataPoint(8, val[k-9])
+                            new DataPoint(5, val[k-4]),
+                            new DataPoint(6, val[k-3]),
+                            new DataPoint(7, val[k-2]),
+                            new DataPoint(8, val[k-1])
                     });
                     graph.addSeries(series);
 //        graph.addSeries(new LineGraphSeries(generateData()));
