@@ -13,6 +13,15 @@ public class ValPars {
         @Element(name = "Value")
         private String value;
 
+        @Element(name = "Nominal")
+        private String nominal;
+
+        public String getNominal(){return nominal;}
+
+        public void setNominal(String nominal) {
+            this.nominal = nominal;
+        }
+
         public String getDate() {
             return date;
         }

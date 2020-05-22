@@ -54,6 +54,8 @@ public class PageFragment_one extends Fragment {
     TextView mani7d;
     String[] mani_1 = new String[4];
     String[] mani_2 = new String[4];
+    String[] nomi_1 = new String[4];
+    String[] nomi_2 = new String[4];
     String[] idCoin = {"R01035", "R01235", "R01239", "R01375", ""};
     Handler handler;
     ViewPager viewPager;
@@ -210,7 +212,7 @@ public class PageFragment_one extends Fragment {
                         int k = 0;
                         for (ValuteCBR valuteCBR : rss.getValuteCBRList()) {
                             if (valuteCBR.getId().equals(idCoin[k])) {
-
+                                nomi_1[k] = valuteCBR.getNominal();
                                 mani_1[k] = valuteCBR.getValue();
                                 k++;
                             }
@@ -239,7 +241,7 @@ public class PageFragment_one extends Fragment {
                         int k = 0;
                         for (ValuteCBR valuteCBR : rss.getValuteCBRList()) {
                             if (valuteCBR.getId().equals(idCoin[k])) {
-
+                                nomi_2[k] = valuteCBR.getNominal();
                                 mani_2[k] = valuteCBR.getValue();
                                 k++;
                             }
@@ -276,13 +278,15 @@ public class PageFragment_one extends Fragment {
                         Map<String, Object> m;
 
                         int k = 0;
+                        int nominal;
                         for (ValuteCBR valuteCBR : rss.getValuteCBRList()) {
                             if (valuteCBR.getId().equals(idCoin[k])) {
 
                                 m = new HashMap<String, Object>();
                                 m.put(TEXT_TITLE,valuteCBR.getName());
-                                m.put(TEXT_PRICE, " " + String.valueOf(valuteCBR.getValue()).replaceAll(",", ".") + " " + Html.fromHtml("&#x20bd"));
+                                nominal = Integer.parseInt(valuteCBR.getNominal());
                                 m.put(TEXT_NOMINAL," " +valuteCBR.getNominal());
+                                m.put(TEXT_PRICE, " " + String.valueOf((Double.parseDouble(String.valueOf(valuteCBR.getValue()).replaceAll(",","."))/nominal)).replaceAll(",", ".") + " " + Html.fromHtml("&#x20bd"));
 
 
 //                                View item = ltInflater.inflate(R.layout.activity_main, linLayout, false);
@@ -296,8 +300,8 @@ public class PageFragment_one extends Fragment {
 //                                nominalCoin.append(" " + valuteCBR.getNominal());
                                // maniCoin.append(" " + String.valueOf(valuteCBR.getValue()).replaceAll(",", ".") + " " + Html.fromHtml("&#x20bd"));
                                 double h, d;
-                                h = 100 - (Double.valueOf(mani_1[k].replaceAll(",", ".")) / (Double.valueOf(valuteCBR.getValue().replaceAll(",", ".")) / 100));
-                                d = 100 - (Double.valueOf(mani_2[k].replaceAll(",", ".")) / (Double.valueOf(valuteCBR.getValue().replaceAll(",", ".")) / 100));
+                                h = 100 - ((Double.valueOf(mani_1[k].replaceAll(",", "."))/Integer.parseInt(nomi_1[k])) / ((Double.valueOf(valuteCBR.getValue().replaceAll(",", "."))/nominal) / 100));
+                                d = 100 - ((Double.valueOf(mani_2[k].replaceAll(",", "."))/Integer.parseInt(nomi_2[k])) / ((Double.valueOf(valuteCBR.getValue().replaceAll(",", "."))/nominal) / 100));
                                 if (h < 0) {
                                     m.put(TEXT_VAL24," - " + String.valueOf(h).substring(1, 5) + " %");
 //                                    mani24h.append(" - " + String.valueOf(h).substring(1, 5) + " %");

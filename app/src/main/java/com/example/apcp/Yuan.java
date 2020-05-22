@@ -101,9 +101,10 @@ public class Yuan extends AppCompatActivity {
 
                     ValuteParser rss = response.body();
                     int k = 0;
+                    int nominal;
                     for(ValPars valPars : rss.getValutePars()){
-
-                        val[k] = Double.valueOf(valPars.getValue().replaceAll(",", "."));
+                        nominal = Integer.parseInt(valPars.getNominal());
+                        val[k] = Double.valueOf(valPars.getValue().replaceAll(",", ".")) / nominal;
                         k++;
                     }
                     GraphView graph = new GraphView(Yuan.this);
