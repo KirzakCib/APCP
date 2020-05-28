@@ -286,7 +286,7 @@ public class PageFragment_one extends Fragment {
                                 m.put(TEXT_TITLE,valuteCBR.getName());
                                 nominal = Integer.parseInt(valuteCBR.getNominal());
                                 m.put(TEXT_NOMINAL," " +valuteCBR.getNominal());
-                                m.put(TEXT_PRICE, " " + String.valueOf((Double.parseDouble(String.valueOf(valuteCBR.getValue()).replaceAll(",","."))/nominal)).replaceAll(",", ".") + " " + Html.fromHtml("&#x20bd"));
+                                m.put(TEXT_PRICE, " " + String.valueOf((Double.parseDouble(String.valueOf(valuteCBR.getValue()).replaceAll(",","."))/nominal)).replaceAll(",", ".").substring(0,6) + " " + Html.fromHtml("&#x20bd"));
 
 
 //                                View item = ltInflater.inflate(R.layout.activity_main, linLayout, false);
