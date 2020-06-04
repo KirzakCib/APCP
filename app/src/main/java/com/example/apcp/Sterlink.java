@@ -32,7 +32,7 @@ import retrofit2.converter.simplexml.SimpleXmlConverterFactory;
 
 public class Sterlink extends AppCompatActivity {
     static final String BASE_URL = "http://www.cbr.ru/scripts/";
-    Double[] val = new Double[15];
+    Double[] val = new Double[150];
     Double[] dat = new Double[15];
     Toast toast;
     @Override
