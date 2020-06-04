@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.helper.StaticLabelsFormatter;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
@@ -29,7 +30,7 @@ public class Evro extends AppCompatActivity {
 
     static final String BASE_URL = "http://www.cbr.ru/scripts/";
     Double[] val = new Double[150];
-    Double[] dat = new Double[15];
+    String[] dat = new String[150];
     Toast toast;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,6 +106,7 @@ public class Evro extends AppCompatActivity {
                     for(ValPars valPars : rss.getValutePars()){
                         nominal = Integer.parseInt(valPars.getNominal());
                         val[k] = Double.valueOf(valPars.getValue().replaceAll(",", ".")) / nominal;
+                        dat[k] = valPars.getDate().substring(0,2);
                         k++;
                     }
                     GraphView graph = new GraphView(Evro.this);
@@ -121,6 +123,16 @@ public class Evro extends AppCompatActivity {
                     });
                     graph.addSeries(series);
 //        graph.addSeries(new LineGraphSeries(generateData()));
+                    // set manual X bounds
+                    StaticLabelsFormatter staticLabelsFormatter = new StaticLabelsFormatter(graph);
+//                    staticLabelsFormatter.setVerticalLabels(new String[] {"-20", "-15", "-10","-5","0","5","10","15","20"});
+//                    graph.getGridLabelRenderer().setLabelFormatter(staticLabelsFormatter);
+
+                    // set manual Y bounds
+                    staticLabelsFormatter.setHorizontalLabels(new String[] {dat[k-9],dat[k-8],dat[k-7],dat[k-6],dat[k-5],dat[k-4],dat[k-3],dat[k-2],dat[k-1],});
+                    graph.getGridLabelRenderer().setLabelFormatter(staticLabelsFormatter);
+                    graph.getViewport().setScrollable(true);
+
                     LinearLayout layout = (LinearLayout) findViewById(R.id.layout);
                     layout.addView(graph);
                 }
