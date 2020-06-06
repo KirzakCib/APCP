@@ -4,6 +4,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
+
+        <Spinner
+            android:background="@drawable/valute_share"
+            android:layout_margin="10dp"
+            android:id="@+id/spinner"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:entries="@array/valute_change"
+            android:textAlignment="center"
+        />
         <ListView
             android:id="@+id/list_item_1"
             android:layout_width="match_parent"

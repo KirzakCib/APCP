@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -57,6 +58,8 @@ public class PageFragment_one extends Fragment {
     String[] nomi_1 = new String[4];
     String[] nomi_2 = new String[4];
     String[] idCoin = {"R01035", "R01235", "R01239", "R01375", ""};
+    String[] idCoinDollarVan = {"R01235", "R01035", "R01239", "R01375", ""};
+    Double dollar;
     Handler handler;
     ViewPager viewPager;
     TabLayout tabLayout;
@@ -65,6 +68,7 @@ public class PageFragment_one extends Fragment {
     ArrayList<String> array;
     TextView news;
     TextView dateNews;
+    Spinner spinner;
     ProgressDialog progressDialog;
     final String TEXT_TITLE = "text";
     final String TEXT_PRICE = "price";
@@ -74,7 +78,6 @@ public class PageFragment_one extends Fragment {
     final String TEXT_GALEREY = "galerey";
     final String ID = "id";
     final String IT = "it";
-
 
     static final String BASE_URL = "http://www.cbr.ru/scripts/";
 
@@ -108,29 +111,31 @@ public class PageFragment_one extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        listView = getActivity().findViewById(R.id.list_item_1);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                if(i == 0) {
-                    Intent intent = new Intent(getActivity(), Sterlink.class);
-                    startActivity(intent);
+
+            listView = getActivity().findViewById(R.id.list_item_1);
+
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    if (i == 0) {
+                        Intent intent = new Intent(getActivity(), Sterlink.class);
+                        startActivity(intent);
                     }
-                if(i == 1) {
-                    Intent intent = new Intent(getActivity(), Dollar.class);
-                    startActivity(intent);
+                    if (i == 1) {
+                        Intent intent = new Intent(getActivity(), Dollar.class);
+                        startActivity(intent);
+                    }
+                    if (i == 2) {
+                        Intent intent = new Intent(getActivity(), Evro.class);
+                        startActivity(intent);
+                    }
+                    if (i == 3) {
+                        Intent intent = new Intent(getActivity(), Yuan.class);
+                        startActivity(intent);
+                    }
                 }
-                if(i == 2) {
-                    Intent intent = new Intent(getActivity(), Evro.class);
-                    startActivity(intent);
-                }
-                if(i == 3) {
-                    Intent intent = new Intent(getActivity(), Yuan.class);
-                    startActivity(intent);
-                }
-            }
-        });
-    }
+            });
+        }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -163,14 +168,34 @@ public class PageFragment_one extends Fragment {
 
             Call<Parser> call = parserXML.loadParser(dateText);
 
-            try {
-                makeGetRequest(call_1);
-                Thread.sleep(1000);
-                makeGet(call_2);
-                Thread.sleep(1000);
-                make(call);
-            } catch (Exception e) {
-            }
+//            ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, data);
+//            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//            spinner.setAdapter(adapter);
+//            spinner.setPrompt("Выбирете:");
+//            spinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//                @Override
+//                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                    if(position == 1){
+//                        try {
+//                            makeGetRequest(call_1);
+//                            Thread.sleep(1000);
+//                            makeGet(call_2);
+//                            Thread.sleep(1000);
+//                            make(call);
+//                        } catch (Exception e) {
+//                        }
+//                    }
+//                }
+//            });
+        try {
+            makeGetRequest(call_1);
+            Thread.sleep(1000);
+            makeGet(call_2);
+            Thread.sleep(1000);
+            make(call);
+        } catch (Exception e) {
+        }
+
             return view;
 //        } else {
 //            View view = inflater.inflate(R.layout.activity_pager_two, container, false);
@@ -196,6 +221,7 @@ public class PageFragment_one extends Fragment {
 //
 //            }
         }
+
 
 
         public void makeGetRequest (Call < Parser > call_1) {
@@ -272,21 +298,321 @@ public class PageFragment_one extends Fragment {
                         //LinearLayout linLayout = (LinearLayout) getActivity().findViewById(R.id.linLayout);
                         //LayoutInflater ltInflater = getLayoutInflater();
 
+                        spinner = getActivity().findViewById(R.id.spinner);
+
                         listView = getActivity().findViewById(R.id.list_item_1);
 
                         ArrayList<Map<String, Object>> data = new ArrayList<Map<String, Object>>();
                         Map<String, Object> m;
 
-                        int k = 0;
-                        int nominal;
-                        for (ValuteCBR valuteCBR : rss.getValuteCBRList()) {
-                            if (valuteCBR.getId().equals(idCoin[k])) {
+                        if(spinner.getSelectedItemPosition() == 0) {
 
-                                m = new HashMap<String, Object>();
-                                m.put(TEXT_TITLE,valuteCBR.getName());
-                                nominal = Integer.parseInt(valuteCBR.getNominal());
-                                m.put(TEXT_NOMINAL," " +valuteCBR.getNominal());
-                                m.put(TEXT_PRICE, " " + String.valueOf((Double.parseDouble(String.valueOf(valuteCBR.getValue()).replaceAll(",","."))/nominal)).replaceAll(",", ".").substring(0,6) + " " + Html.fromHtml("&#x20bd"));
+                            int k = 0;
+                            int nominal;
+                            for (ValuteCBR valuteCBR : rss.getValuteCBRList()) {
+                                if (valuteCBR.getId().equals(idCoin[k])) {
+
+                                    m = new HashMap<String, Object>();
+                                    m.put(TEXT_TITLE, valuteCBR.getName());
+                                    nominal = Integer.parseInt(valuteCBR.getNominal());
+                                    m.put(TEXT_NOMINAL, " " + valuteCBR.getNominal());
+                                    m.put(TEXT_PRICE, " " + String.valueOf((Double.parseDouble(String.valueOf(valuteCBR.getValue()).replaceAll(",", ".")) / nominal)).replaceAll(",", ".").substring(0, 6) + " " + Html.fromHtml("&#x20bd"));
+
+                                    if (k == 1) {
+                                        dollar = Double.parseDouble(String.valueOf((Double.parseDouble(String.valueOf(valuteCBR.getValue()).replaceAll(",", ".")) / nominal)).replaceAll(",", ".").substring(0, 6));
+                                    }
+
+//                                View item = ltInflater.inflate(R.layout.activity_main, linLayout, false);
+//                                galerey = item.findViewById(R.id.image);
+//                                nameCoin = item.findViewById(R.id.name);
+//                                nominalCoin = item.findViewById(R.id.nominal);
+//                                maniCoin = item.findViewById(R.id.mani);
+//                                mani24h = item.findViewById(R.id.day);
+//                                mani7d = item.findViewById(R.id.week);
+//                                nameCoin.setText(valuteCBR.getName());
+//                                nominalCoin.append(" " + valuteCBR.getNominal());
+                                    // maniCoin.append(" " + String.valueOf(valuteCBR.getValue()).replaceAll(",", ".") + " " + Html.fromHtml("&#x20bd"));
+                                    double h, d;
+                                    h = 100 - ((Double.valueOf(mani_1[k].replaceAll(",", ".")) / Integer.parseInt(nomi_1[k])) / ((Double.valueOf(valuteCBR.getValue().replaceAll(",", ".")) / nominal) / 100));
+                                    d = 100 - ((Double.valueOf(mani_2[k].replaceAll(",", ".")) / Integer.parseInt(nomi_2[k])) / ((Double.valueOf(valuteCBR.getValue().replaceAll(",", ".")) / nominal) / 100));
+                                    if (h < 0) {
+                                        m.put(TEXT_VAL24, " - " + String.valueOf(h).substring(1, 5) + " %");
+//                                    mani24h.append(" - " + String.valueOf(h).substring(1, 5) + " %");
+//                                    mani24h.setTextColor(Color.RED);
+                                    }
+                                    if (d < 0) {
+                                        m.put(TEXT_VAL7d, " - " + String.valueOf(d).substring(1, 5) + " %");
+//                                    mani7d.append(" - " + String.valueOf(d).substring(1, 5) + " %");
+//                                    mani7d.setTextColor(Color.RED);
+                                    }
+                                    if (h > 0) {
+                                        m.put(TEXT_VAL24, " + " + String.valueOf(h).substring(0, 4) + " %");
+//                                    mani24h.append(" + " + String.valueOf(h).substring(0, 4) + " %");
+//                                    mani24h.setTextColor(Color.GREEN);
+                                    }
+                                    if (d > 0) {
+                                        m.put(TEXT_VAL7d, " + " + String.valueOf(d).substring(0, 4) + " %");
+//                                    mani7d.append(" + " + String.valueOf(d).substring(0, 4) + " %");
+//                                    mani7d.setTextColor(Color.GREEN);
+                                    }
+                                    if (h == 0) {
+                                        m.put(TEXT_VAL24, " " + "0.00 %");
+//                                    mani24h.append(" " + "0.00 %");
+//                                    mani24h.setTextColor(Color.GRAY);
+                                    }
+                                    if (d == 0) {
+                                        m.put(TEXT_VAL7d, " " + "0.00 %");
+//                                    mani7d.append(" " + "0.00 %");
+//                                    mani7d.setTextColor(Color.GRAY);
+                                    }
+                                    if (k == 0)
+                                        m.put(TEXT_GALEREY, R.drawable.sterlink);
+                                    // galerey.setImageResource(R.drawable.sterlink);
+                                    if (k == 1)
+                                        m.put(TEXT_GALEREY, R.drawable.dollar);
+//                                    galerey.setImageResource(R.drawable.dollar);
+                                    if (k == 2)
+                                        m.put(TEXT_GALEREY, R.drawable.evro);
+//                                    galerey.setImageResource(R.drawable.evro);
+                                    if (k == 3)
+                                        m.put(TEXT_GALEREY, R.drawable.yuan);
+//                                    galerey.setImageResource(R.drawable.yuan);
+
+//                                item.getLayoutParams().width = LinearLayout.LayoutParams.MATCH_PARENT;
+//                                linLayout.addView(item);
+
+                                    data.add(m);
+
+                                    k++;
+                                }
+                                String[] from = {TEXT_TITLE, TEXT_NOMINAL, TEXT_PRICE, TEXT_VAL24, TEXT_VAL7d, TEXT_GALEREY};
+                                int[] to = {R.id.name, R.id.nominal, R.id.mani, R.id.day, R.id.week, R.id.image};
+                                MySimpleAdapter sAdapter = new MySimpleAdapter(getActivity(), data, R.layout.activity_main,
+                                        from, to);
+                                listView.setAdapter(sAdapter);
+                            }
+                        }else{
+
+                            for (ValuteCBR valuteCBR : rss.getValuteCBRList()) {
+                                if (valuteCBR.getId().equals(idCoin[1])) {
+                                      dollar = Double.parseDouble(String.valueOf((Double.parseDouble(String.valueOf(valuteCBR.getValue()).replaceAll(",", ".")) / 1)).replaceAll(",", ".").substring(0, 6));
+                                    }
+                            }
+
+                            int k = 0;
+                            int nominal;
+                            for (ValuteCBR valuteCBR : rss.getValuteCBRList()) {
+                                if (valuteCBR.getId().equals(idCoin[k])) {
+                                    nominal = Integer.parseInt(valuteCBR.getNominal());
+                                    m = new HashMap<String, Object>();
+                                    if( k != 1) {
+                                        m.put(TEXT_TITLE, valuteCBR.getName());
+                                        m.put(TEXT_NOMINAL, " " + valuteCBR.getNominal());
+                                        m.put(TEXT_PRICE, " " + String.valueOf((Double.parseDouble(String.valueOf(valuteCBR.getValue()).replaceAll(",", ".")) / nominal) / dollar).substring(0, 7) + " " + Html.fromHtml("&#36"));
+                                    }else{
+                                        m.put(TEXT_TITLE,"Российский Рубль");
+                                        m.put(TEXT_NOMINAL," " + valuteCBR.getNominal());
+                                        m.put(TEXT_PRICE," " + String.valueOf(1/dollar).substring(0,7) + " " + Html.fromHtml("&#36"));
+                                    }
+
+//                                View item = ltInflater.inflate(R.layout.activity_main, linLayout, false);
+//                                galerey = item.findViewById(R.id.image);
+//                                nameCoin = item.findViewById(R.id.name);
+//                                nominalCoin = item.findViewById(R.id.nominal);
+//                                maniCoin = item.findViewById(R.id.mani);
+//                                mani24h = item.findViewById(R.id.day);
+//                                mani7d = item.findViewById(R.id.week);
+//                                nameCoin.setText(valuteCBR.getName());
+//                                nominalCoin.append(" " + valuteCBR.getNominal());
+                                    // maniCoin.append(" " + String.valueOf(valuteCBR.getValue()).replaceAll(",", ".") + " " + Html.fromHtml("&#x20bd"));
+                                    double h, d;
+                                    if(k != 1) {
+                                        h =  (((Double.valueOf(mani_1[k].replaceAll(",", ".")) / Integer.parseInt(nomi_1[k])) / ((Double.valueOf(mani_1[1].replaceAll(",", ".")) / nominal))/ ((Double.parseDouble(String.valueOf(valuteCBR.getValue()).replaceAll(",", ".")) / nominal) / dollar)) / 100);
+                                        d =  (((Double.valueOf(mani_2[k].replaceAll(",", ".")) / Integer.parseInt(nomi_2[k])) / ((Double.valueOf(mani_2[1].replaceAll(",", ".")) / nominal))/ ((Double.parseDouble(String.valueOf(valuteCBR.getValue()).replaceAll(",", ".")) / nominal) / dollar)) / 100);
+                                    }else{
+                                        h = ((((1) / Integer.parseInt(nomi_1[k])) / ((Double.valueOf(mani_1[1].replaceAll(",", ".")) / nominal) / ((Double.parseDouble(String.valueOf(valuteCBR.getValue()).replaceAll(",", ".")) / nominal) / dollar)) / 100));
+                                        d = ((((1) / Integer.parseInt(nomi_2[k])) / ((Double.valueOf(mani_2[1].replaceAll(",", ".")) / nominal) / ((Double.parseDouble(String.valueOf(valuteCBR.getValue()).replaceAll(",", ".")) / nominal) / dollar)) / 100));
+
+                                    }
+
+                                    if (h < 0) {
+                                        m.put(TEXT_VAL24, " - " + String.valueOf(h).substring(1, 7) + " %");
+//                                    mani24h.append(" - " + String.valueOf(h).substring(1, 5) + " %");
+//                                    mani24h.setTextColor(Color.RED);
+                                    }
+                                    if (d < 0) {
+                                        m.put(TEXT_VAL7d, " - " + String.valueOf(d).substring(1, 7) + " %");
+//                                    mani7d.append(" - " + String.valueOf(d).substring(1, 5) + " %");
+//                                    mani7d.setTextColor(Color.RED);
+                                    }
+                                    if (h > 0) {
+                                        m.put(TEXT_VAL24, " + " + String.valueOf(h).substring(0, 7) + " %");
+//                                    mani24h.append(" + " + String.valueOf(h).substring(0, 4) + " %");
+//                                    mani24h.setTextColor(Color.GREEN);
+                                    }
+                                    if (d > 0) {
+                                        m.put(TEXT_VAL7d, " + " + String.valueOf(d).substring(0, 7) + " %");
+//                                    mani7d.append(" + " + String.valueOf(d).substring(0, 4) + " %");
+//                                    mani7d.setTextColor(Color.GREEN);
+                                    }
+                                    if (h == 0) {
+                                        m.put(TEXT_VAL24, " " + "0.00 %");
+//                                    mani24h.append(" " + "0.00 %");
+//                                    mani24h.setTextColor(Color.GRAY);
+                                    }
+                                    if (d == 0) {
+                                        m.put(TEXT_VAL7d, " " + "0.00 %");
+//                                    mani7d.append(" " + "0.00 %");
+//                                    mani7d.setTextColor(Color.GRAY);
+                                    }
+                                    if (k == 0)
+                                        m.put(TEXT_GALEREY, R.drawable.sterlink);
+                                    // galerey.setImageResource(R.drawable.sterlink);
+                                    if (k == 1)
+                                        m.put(TEXT_GALEREY, R.drawable.ruble);
+//                                    galerey.setImageResource(R.drawable.dollar);
+                                    if (k == 2)
+                                        m.put(TEXT_GALEREY, R.drawable.evro);
+//                                    galerey.setImageResource(R.drawable.evro);
+                                    if (k == 3)
+                                        m.put(TEXT_GALEREY, R.drawable.yuan);
+//                                    galerey.setImageResource(R.drawable.yuan);
+
+//                                item.getLayoutParams().width = LinearLayout.LayoutParams.MATCH_PARENT;
+//                                linLayout.addView(item);
+
+                                    data.add(m);
+
+                                    k++;
+                                }
+                                String[] from = {TEXT_TITLE, TEXT_NOMINAL, TEXT_PRICE, TEXT_VAL24, TEXT_VAL7d, TEXT_GALEREY};
+                                int[] to = {R.id.name, R.id.nominal, R.id.mani, R.id.day, R.id.week, R.id.image};
+                                MySimpleAdapter sAdapter = new MySimpleAdapter(getActivity(), data, R.layout.activity_main,
+                                        from, to);
+                                listView.setAdapter(sAdapter);
+
+                            }
+                        }
+
+
+                        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                            @Override
+                            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                                if(position == 1){
+                                    listView.removeAllViewsInLayout();
+                            ArrayList<Map<String, Object>> data = new ArrayList<Map<String, Object>>();
+                            Map<String, Object> m;
+
+                            int k = 0;
+                            int nominal;
+                            for (ValuteCBR valuteCBR : rss.getValuteCBRList()) {
+                                if (valuteCBR.getId().equals(idCoin[k])) {
+                                    nominal = Integer.parseInt(valuteCBR.getNominal());
+                                    m = new HashMap<String, Object>();
+                                    if( k != 1) {
+                                        m.put(TEXT_TITLE, valuteCBR.getName());
+                                        m.put(TEXT_NOMINAL, " " + valuteCBR.getNominal());
+                                        m.put(TEXT_PRICE, " " + String.valueOf((Double.parseDouble(String.valueOf(valuteCBR.getValue()).replaceAll(",", ".")) / nominal) / dollar).substring(0, 7) + " " + Html.fromHtml("&#36"));
+                                    }else{
+                                        m.put(TEXT_TITLE,"Российский Рубль");
+                                        m.put(TEXT_NOMINAL," " + valuteCBR.getNominal());
+                                        m.put(TEXT_PRICE," " + String.valueOf(1/dollar).substring(0,7) + " " + Html.fromHtml("&#36"));
+                                    }
+
+//                                View item = ltInflater.inflate(R.layout.activity_main, linLayout, false);
+//                                galerey = item.findViewById(R.id.image);
+//                                nameCoin = item.findViewById(R.id.name);
+//                                nominalCoin = item.findViewById(R.id.nominal);
+//                                maniCoin = item.findViewById(R.id.mani);
+//                                mani24h = item.findViewById(R.id.day);
+//                                mani7d = item.findViewById(R.id.week);
+//                                nameCoin.setText(valuteCBR.getName());
+//                                nominalCoin.append(" " + valuteCBR.getNominal());
+                                    // maniCoin.append(" " + String.valueOf(valuteCBR.getValue()).replaceAll(",", ".") + " " + Html.fromHtml("&#x20bd"));
+                                    double h, d;
+                                    if(k != 1) {
+                                        h =  (((Double.valueOf(mani_1[k].replaceAll(",", ".")) / Integer.parseInt(nomi_1[k])) / ((Double.valueOf(mani_1[1].replaceAll(",", ".")) / nominal))/ ((Double.parseDouble(String.valueOf(valuteCBR.getValue()).replaceAll(",", ".")) / nominal) / dollar)) / 100);
+                                        d =  (((Double.valueOf(mani_2[k].replaceAll(",", ".")) / Integer.parseInt(nomi_2[k])) / ((Double.valueOf(mani_2[1].replaceAll(",", ".")) / nominal))/ ((Double.parseDouble(String.valueOf(valuteCBR.getValue()).replaceAll(",", ".")) / nominal) / dollar)) / 100);
+                                    }else{
+                                        h = ((((1) / Integer.parseInt(nomi_1[k])) / ((Double.valueOf(mani_1[1].replaceAll(",", ".")) / nominal) / ((Double.parseDouble(String.valueOf(valuteCBR.getValue()).replaceAll(",", ".")) / nominal) / dollar)) / 100));
+                                        d = ((((1) / Integer.parseInt(nomi_2[k])) / ((Double.valueOf(mani_2[1].replaceAll(",", ".")) / nominal) / ((Double.parseDouble(String.valueOf(valuteCBR.getValue()).replaceAll(",", ".")) / nominal) / dollar)) / 100));
+
+                                    }
+
+                                    if (h < 0) {
+                                        m.put(TEXT_VAL24, " - " + String.valueOf(h).substring(1, 7) + " %");
+//                                    mani24h.append(" - " + String.valueOf(h).substring(1, 5) + " %");
+//                                    mani24h.setTextColor(Color.RED);
+                                    }
+                                    if (d < 0) {
+                                        m.put(TEXT_VAL7d, " - " + String.valueOf(d).substring(1, 7) + " %");
+//                                    mani7d.append(" - " + String.valueOf(d).substring(1, 5) + " %");
+//                                    mani7d.setTextColor(Color.RED);
+                                    }
+                                    if (h > 0) {
+                                        m.put(TEXT_VAL24, " + " + String.valueOf(h).substring(0, 7) + " %");
+//                                    mani24h.append(" + " + String.valueOf(h).substring(0, 4) + " %");
+//                                    mani24h.setTextColor(Color.GREEN);
+                                    }
+                                    if (d > 0) {
+                                        m.put(TEXT_VAL7d, " + " + String.valueOf(d).substring(0, 7) + " %");
+//                                    mani7d.append(" + " + String.valueOf(d).substring(0, 4) + " %");
+//                                    mani7d.setTextColor(Color.GREEN);
+                                    }
+                                    if (h == 0) {
+                                        m.put(TEXT_VAL24, " " + "0.00 %");
+//                                    mani24h.append(" " + "0.00 %");
+//                                    mani24h.setTextColor(Color.GRAY);
+                                    }
+                                    if (d == 0) {
+                                        m.put(TEXT_VAL7d, " " + "0.00 %");
+//                                    mani7d.append(" " + "0.00 %");
+//                                    mani7d.setTextColor(Color.GRAY);
+                                    }
+                                    if (k == 0)
+                                        m.put(TEXT_GALEREY, R.drawable.sterlink);
+                                    // galerey.setImageResource(R.drawable.sterlink);
+                                    if (k == 1)
+                                        m.put(TEXT_GALEREY, R.drawable.ruble);
+//                                    galerey.setImageResource(R.drawable.dollar);
+                                    if (k == 2)
+                                        m.put(TEXT_GALEREY, R.drawable.evro);
+//                                    galerey.setImageResource(R.drawable.evro);
+                                    if (k == 3)
+                                        m.put(TEXT_GALEREY, R.drawable.yuan);
+//                                    galerey.setImageResource(R.drawable.yuan);
+
+//                                item.getLayoutParams().width = LinearLayout.LayoutParams.MATCH_PARENT;
+//                                linLayout.addView(item);
+
+                                    data.add(m);
+
+                                    k++;
+                                }
+                                String[] from = {TEXT_TITLE, TEXT_NOMINAL, TEXT_PRICE, TEXT_VAL24, TEXT_VAL7d, TEXT_GALEREY};
+                                int[] to = {R.id.name, R.id.nominal, R.id.mani, R.id.day, R.id.week, R.id.image};
+                                MySimpleAdapter sAdapter = new MySimpleAdapter(getActivity(), data, R.layout.activity_main,
+                                        from, to);
+                                listView.setAdapter(sAdapter);
+
+                            }
+
+                                }
+                                if(position == 0){
+                                    listView.removeAllViewsInLayout();
+                                    ArrayList<Map<String, Object>> data = new ArrayList<Map<String, Object>>();
+                                    Map<String, Object> m;
+
+                                    int k = 0;
+                                    int nominal;
+                                    for (ValuteCBR valuteCBR : rss.getValuteCBRList()) {
+                                        if (valuteCBR.getId().equals(idCoin[k])) {
+
+                                            m = new HashMap<String, Object>();
+                                            m.put(TEXT_TITLE, valuteCBR.getName());
+                                            nominal = Integer.parseInt(valuteCBR.getNominal());
+                                            m.put(TEXT_NOMINAL, " " + valuteCBR.getNominal());
+                                            m.put(TEXT_PRICE, " " + String.valueOf((Double.parseDouble(String.valueOf(valuteCBR.getValue()).replaceAll(",", ".")) / nominal)).replaceAll(",", ".").substring(0, 6) + " " + Html.fromHtml("&#x20bd"));
 
 
 //                                View item = ltInflater.inflate(R.layout.activity_main, linLayout, false);
@@ -298,66 +624,73 @@ public class PageFragment_one extends Fragment {
 //                                mani7d = item.findViewById(R.id.week);
 //                                nameCoin.setText(valuteCBR.getName());
 //                                nominalCoin.append(" " + valuteCBR.getNominal());
-                               // maniCoin.append(" " + String.valueOf(valuteCBR.getValue()).replaceAll(",", ".") + " " + Html.fromHtml("&#x20bd"));
-                                double h, d;
-                                h = 100 - ((Double.valueOf(mani_1[k].replaceAll(",", "."))/Integer.parseInt(nomi_1[k])) / ((Double.valueOf(valuteCBR.getValue().replaceAll(",", "."))/nominal) / 100));
-                                d = 100 - ((Double.valueOf(mani_2[k].replaceAll(",", "."))/Integer.parseInt(nomi_2[k])) / ((Double.valueOf(valuteCBR.getValue().replaceAll(",", "."))/nominal) / 100));
-                                if (h < 0) {
-                                    m.put(TEXT_VAL24," - " + String.valueOf(h).substring(1, 5) + " %");
+                                            // maniCoin.append(" " + String.valueOf(valuteCBR.getValue()).replaceAll(",", ".") + " " + Html.fromHtml("&#x20bd"));
+                                            double h, d;
+                                            h = 100 - ((Double.valueOf(mani_1[k].replaceAll(",", ".")) / Integer.parseInt(nomi_1[k])) / ((Double.valueOf(valuteCBR.getValue().replaceAll(",", ".")) / nominal) / 100));
+                                            d = 100 - ((Double.valueOf(mani_2[k].replaceAll(",", ".")) / Integer.parseInt(nomi_2[k])) / ((Double.valueOf(valuteCBR.getValue().replaceAll(",", ".")) / nominal) / 100));
+                                            if (h < 0) {
+                                                m.put(TEXT_VAL24, " - " + String.valueOf(h).substring(1, 5) + " %");
 //                                    mani24h.append(" - " + String.valueOf(h).substring(1, 5) + " %");
 //                                    mani24h.setTextColor(Color.RED);
-                                }
-                                if (d < 0) {
-                                    m.put(TEXT_VAL7d," - " + String.valueOf(d).substring(1, 5) + " %");
+                                            }
+                                            if (d < 0) {
+                                                m.put(TEXT_VAL7d, " - " + String.valueOf(d).substring(1, 5) + " %");
 //                                    mani7d.append(" - " + String.valueOf(d).substring(1, 5) + " %");
 //                                    mani7d.setTextColor(Color.RED);
-                                }
-                                if (h > 0) {
-                                    m.put(TEXT_VAL24," + " + String.valueOf(h).substring(0, 4) + " %");
+                                            }
+                                            if (h > 0) {
+                                                m.put(TEXT_VAL24, " + " + String.valueOf(h).substring(0, 4) + " %");
 //                                    mani24h.append(" + " + String.valueOf(h).substring(0, 4) + " %");
 //                                    mani24h.setTextColor(Color.GREEN);
-                                }
-                                if (d > 0) {
-                                    m.put(TEXT_VAL7d," + " + String.valueOf(d).substring(0, 4) + " %");
+                                            }
+                                            if (d > 0) {
+                                                m.put(TEXT_VAL7d, " + " + String.valueOf(d).substring(0, 4) + " %");
 //                                    mani7d.append(" + " + String.valueOf(d).substring(0, 4) + " %");
 //                                    mani7d.setTextColor(Color.GREEN);
-                                }
-                                if (h == 0) {
-                                    m.put(TEXT_VAL24," " + "0.00 %");
+                                            }
+                                            if (h == 0) {
+                                                m.put(TEXT_VAL24, " " + "0.00 %");
 //                                    mani24h.append(" " + "0.00 %");
 //                                    mani24h.setTextColor(Color.GRAY);
-                                }
-                                if (d == 0) {
-                                    m.put(TEXT_VAL7d," " + "0.00 %");
+                                            }
+                                            if (d == 0) {
+                                                m.put(TEXT_VAL7d, " " + "0.00 %");
 //                                    mani7d.append(" " + "0.00 %");
 //                                    mani7d.setTextColor(Color.GRAY);
-                                }
-                                if (k == 0)
-                                    m.put(TEXT_GALEREY,R.drawable.sterlink);
-                                   // galerey.setImageResource(R.drawable.sterlink);
-                                if (k == 1)
-                                m.put(TEXT_GALEREY,R.drawable.dollar);
+                                            }
+                                            if (k == 0)
+                                                m.put(TEXT_GALEREY, R.drawable.sterlink);
+                                            // galerey.setImageResource(R.drawable.sterlink);
+                                            if (k == 1)
+                                                m.put(TEXT_GALEREY, R.drawable.dollar);
 //                                    galerey.setImageResource(R.drawable.dollar);
-                                if (k == 2)
-                                m.put(TEXT_GALEREY,R.drawable.evro);
+                                            if (k == 2)
+                                                m.put(TEXT_GALEREY, R.drawable.evro);
 //                                    galerey.setImageResource(R.drawable.evro);
-                                if (k == 3)
-                                m.put(TEXT_GALEREY,R.drawable.yuan);
+                                            if (k == 3)
+                                                m.put(TEXT_GALEREY, R.drawable.yuan);
 //                                    galerey.setImageResource(R.drawable.yuan);
 
 //                                item.getLayoutParams().width = LinearLayout.LayoutParams.MATCH_PARENT;
 //                                linLayout.addView(item);
 
-                                data.add(m);
+                                            data.add(m);
 
-                                k++;
+                                            k++;
+                                        }
+                                        String[] from = {TEXT_TITLE, TEXT_NOMINAL, TEXT_PRICE, TEXT_VAL24, TEXT_VAL7d, TEXT_GALEREY};
+                                        int[] to = {R.id.name, R.id.nominal, R.id.mani, R.id.day, R.id.week, R.id.image};
+                                        MySimpleAdapter sAdapter = new MySimpleAdapter(getActivity(), data, R.layout.activity_main,
+                                                from, to);
+                                        listView.setAdapter(sAdapter);
+                                    }
+                                }
                             }
-                            String[] from = {TEXT_TITLE,TEXT_NOMINAL,TEXT_PRICE,TEXT_VAL24,TEXT_VAL7d,TEXT_GALEREY};
-                            int[] to = {R.id.name,R.id.nominal,R.id.mani,R.id.day,R.id.week,R.id.image};
-                            MySimpleAdapter sAdapter = new MySimpleAdapter(getActivity(), data, R.layout.activity_main,
-                                    from, to);
-                            listView.setAdapter(sAdapter);
-                        }
+
+                            @Override
+                            public void onNothingSelected(AdapterView<?> parent) {
+                            }
+                        });
                     }
                 }
 

@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">APCP</string>
+    <string-array name="valute_change" >
+        <item>Относительно рубля</item>
+        <item>Относительно доллара</item>
+    </string-array>
 </resources>
