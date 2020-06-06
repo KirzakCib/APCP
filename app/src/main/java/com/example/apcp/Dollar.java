@@ -3,9 +3,11 @@ package com.example.apcp;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jjoe64.graphview.GraphView;
@@ -37,30 +39,67 @@ public class Dollar extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dollar);
 
-        Date currentDate = new Date();
-        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-        String dateText = dateFormat.format(currentDate);
-        Calendar calendar = Calendar.getInstance();
-        Calendar calendar1 = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        try {
-            calendar.setTime(sdf.parse(dateText));
-            calendar1.setTime(sdf.parse(dateText));
-        } catch (
-                ParseException e) {
-            e.printStackTrace();
+        Intent intent = getIntent();
+
+        String dol = intent.getStringExtra("dol2");
+
+        if(dol.equals("yes")){
+            TextView textView = findViewById(R.id.dol2);
+            textView.append("Российский Рубль");
+            Date currentDate = new Date();
+            DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+            String dateText = dateFormat.format(currentDate);
+            Calendar calendar = Calendar.getInstance();
+            Calendar calendar1 = Calendar.getInstance();
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            try {
+                calendar.setTime(sdf.parse(dateText));
+                calendar1.setTime(sdf.parse(dateText));
+            } catch (
+                    ParseException e) {
+                e.printStackTrace();
+            }
+            Retrofit retrofit = new Retrofit.Builder().baseUrl(BASE_URL)
+                    .addConverterFactory(SimpleXmlConverterFactory.create()).build();
+
+            ParserXML parserXML = retrofit.create(ParserXML.class);
+
+            calendar.add(Calendar.WEEK_OF_MONTH, -3);
+
+            Call<ValuteParser> call = parserXML.valueParser(sdf.format(calendar.getTime()), sdf.format(calendar1.getTime()), "R01235");
+
+            make1(call);
         }
-        Retrofit retrofit = new Retrofit.Builder().baseUrl(BASE_URL)
-                .addConverterFactory(SimpleXmlConverterFactory.create()).build();
 
-        ParserXML parserXML = retrofit.create(ParserXML.class);
+        if(dol.equals("not")) {
 
-        calendar.add(Calendar.WEEK_OF_MONTH, -3);
+            TextView textView = findViewById(R.id.dol2);
+            textView.append("Доллар США");
 
-        Call<ValuteParser> call = parserXML.valueParser(sdf.format(calendar.getTime()),sdf.format(calendar1.getTime()),"R01235");
+            Date currentDate = new Date();
+            DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+            String dateText = dateFormat.format(currentDate);
+            Calendar calendar = Calendar.getInstance();
+            Calendar calendar1 = Calendar.getInstance();
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            try {
+                calendar.setTime(sdf.parse(dateText));
+                calendar1.setTime(sdf.parse(dateText));
+            } catch (
+                    ParseException e) {
+                e.printStackTrace();
+            }
+            Retrofit retrofit = new Retrofit.Builder().baseUrl(BASE_URL)
+                    .addConverterFactory(SimpleXmlConverterFactory.create()).build();
 
-        make(call);
+            ParserXML parserXML = retrofit.create(ParserXML.class);
 
+            calendar.add(Calendar.WEEK_OF_MONTH, -3);
+
+            Call<ValuteParser> call = parserXML.valueParser(sdf.format(calendar.getTime()), sdf.format(calendar1.getTime()), "R01235");
+
+            make(call);
+        }
 
 //        GraphView graph = new GraphView(this);
 //        LineGraphSeries<DataPoint> series = new LineGraphSeries<DataPoint>(new DataPoint[] {
@@ -120,6 +159,66 @@ public class Dollar extends AppCompatActivity {
                             new DataPoint(6, val[k-3]),
                             new DataPoint(7, val[k-2]),
                             new DataPoint(8, val[k-1])
+                    });
+                    graph.addSeries(series);
+//        graph.addSeries(new LineGraphSeries(generateData()));
+                    // set manual X bounds
+                    StaticLabelsFormatter staticLabelsFormatter = new StaticLabelsFormatter(graph);
+//                    staticLabelsFormatter.setVerticalLabels(new String[] {"-20", "-15", "-10","-5","0","5","10","15","20"});
+//                    graph.getGridLabelRenderer().setLabelFormatter(staticLabelsFormatter);
+
+                    // set manual Y bounds
+                    staticLabelsFormatter.setHorizontalLabels(new String[] {dat[k-9],dat[k-8],dat[k-7],dat[k-6],dat[k-5],dat[k-4],dat[k-3],dat[k-2],dat[k-1],});
+                    graph.getGridLabelRenderer().setLabelFormatter(staticLabelsFormatter);
+                    graph.getViewport().setScrollable(true);
+
+                    LinearLayout layout = (LinearLayout) findViewById(R.id.layout);
+                    layout.addView(graph);
+                }
+            }
+
+
+
+            @Override
+            public void onFailure(Call<ValuteParser> call, Throwable t) {
+                String tx = "Пожауйста, проверьте Ваше подключение к сети и перезапустите приложение.\n Если у Вас не получается решить проблему, пишите: Kirzak899@gmail.com \n С уважением.";
+                Toast tool = Toast.makeText(Dollar.this,tx,Toast.LENGTH_LONG);
+                tool.setGravity(Gravity.CENTER,0,0);
+                tool.show();
+            }
+        });
+
+    }
+
+    public void make1 (Call < ValuteParser > call) {
+
+        call.enqueue(new Callback<ValuteParser>() {
+            @SuppressLint("StaticFieldLeak")
+            Date currentDate = new Date();
+            @Override
+            public void onResponse(Call<ValuteParser> call, Response<ValuteParser> response) {
+                if (response.isSuccessful()) {
+
+                    ValuteParser rss = response.body();
+                    int k =0;
+                    int nominal;
+                    for(ValPars valPars : rss.getValutePars()){
+                        nominal = Integer.parseInt(valPars.getNominal());
+                        val[k] = Double.valueOf(valPars.getValue().replaceAll(",", ".")) / nominal;
+                        dat[k] = valPars.getDate().substring(0,2);
+                        k++;
+                    }
+                    GraphView graph = new GraphView(Dollar.this);
+                    LineGraphSeries<DataPoint> series = new LineGraphSeries<DataPoint>(new DataPoint[] {
+                            new DataPoint(0, 1/val[k-9]),
+                            new DataPoint(1, 1/val[k-8]),
+                            new DataPoint(2, 1/val[k-7]),
+                            new DataPoint(3, 1/val[k-6]),
+                            new DataPoint(4, 1/val[k-5]),
+                            new DataPoint(5, 1/val[k-4]),
+                            new DataPoint(6, 1/val[k-3]),
+                            new DataPoint(7, 1/val[k-2]),
+                            new DataPoint(8, 1/val[k-1])
                     });
                     graph.addSeries(series);
 //        graph.addSeries(new LineGraphSeries(generateData()));

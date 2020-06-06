@@ -18,10 +18,10 @@
             android:layout_margin="10dp"
             >
             <TextView
+                android:id="@+id/dol2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="28dp"
-                android:text="Доллар США"
                 android:layout_margin="10dp"
                 android:textAlignment="center"
                 />

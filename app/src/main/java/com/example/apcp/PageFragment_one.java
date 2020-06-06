@@ -78,6 +78,7 @@ public class PageFragment_one extends Fragment {
     final String TEXT_GALEREY = "galerey";
     final String ID = "id";
     final String IT = "it";
+    boolean rotate = false;
 
     static final String BASE_URL = "http://www.cbr.ru/scripts/";
 
@@ -117,21 +118,48 @@ public class PageFragment_one extends Fragment {
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    if (i == 0) {
-                        Intent intent = new Intent(getActivity(), Sterlink.class);
-                        startActivity(intent);
-                    }
-                    if (i == 1) {
-                        Intent intent = new Intent(getActivity(), Dollar.class);
-                        startActivity(intent);
-                    }
-                    if (i == 2) {
-                        Intent intent = new Intent(getActivity(), Evro.class);
-                        startActivity(intent);
-                    }
-                    if (i == 3) {
-                        Intent intent = new Intent(getActivity(), Yuan.class);
-                        startActivity(intent);
+                    if(!rotate) {
+                        if (i == 0) {
+                            Intent intent = new Intent(getActivity(), Sterlink.class);
+                            intent.putExtra("dol1","not");
+                            startActivity(intent);
+                        }
+                        if (i == 1) {
+                            Intent intent = new Intent(getActivity(), Dollar.class);
+                            intent.putExtra("dol2","not");
+                            startActivity(intent);
+                        }
+                        if (i == 2) {
+                            Intent intent = new Intent(getActivity(), Evro.class);
+                            intent.putExtra("dol3","not");
+                            startActivity(intent);
+                        }
+                        if (i == 3) {
+                            Intent intent = new Intent(getActivity(), Yuan.class);
+                            intent.putExtra("dol4","not");
+                            startActivity(intent);
+                        }
+                    }else{
+                        if (i == 0) {
+                            Intent intent = new Intent(getActivity(), Sterlink.class);
+                            intent.putExtra("dol1","yes");
+                            startActivity(intent);
+                        }
+                        if (i == 1) {
+                            Intent intent = new Intent(getActivity(), Dollar.class);
+                            intent.putExtra("dol2","yes");
+                            startActivity(intent);
+                        }
+                        if (i == 2) {
+                            Intent intent = new Intent(getActivity(), Evro.class);
+                            intent.putExtra("dol3","yes");
+                            startActivity(intent);
+                        }
+                        if (i == 3) {
+                            Intent intent = new Intent(getActivity(), Yuan.class);
+                            intent.putExtra("dol4","yes");
+                            startActivity(intent);
+                        }
                     }
                 }
             });
@@ -306,7 +334,7 @@ public class PageFragment_one extends Fragment {
                         Map<String, Object> m;
 
                         if(spinner.getSelectedItemPosition() == 0) {
-
+                                rotate = false;
                             int k = 0;
                             int nominal;
                             for (ValuteCBR valuteCBR : rss.getValuteCBRList()) {
@@ -392,7 +420,7 @@ public class PageFragment_one extends Fragment {
                                 listView.setAdapter(sAdapter);
                             }
                         }else{
-
+                                 rotate = true;
                             for (ValuteCBR valuteCBR : rss.getValuteCBRList()) {
                                 if (valuteCBR.getId().equals(idCoin[1])) {
                                       dollar = Double.parseDouble(String.valueOf((Double.parseDouble(String.valueOf(valuteCBR.getValue()).replaceAll(",", ".")) / 1)).replaceAll(",", ".").substring(0, 6));
@@ -499,6 +527,7 @@ public class PageFragment_one extends Fragment {
                             @Override
                             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                                 if(position == 1){
+                                    rotate = true;
                                     listView.removeAllViewsInLayout();
                             ArrayList<Map<String, Object>> data = new ArrayList<Map<String, Object>>();
                             Map<String, Object> m;
@@ -599,6 +628,7 @@ public class PageFragment_one extends Fragment {
 
                                 }
                                 if(position == 0){
+                                    rotate = false;
                                     listView.removeAllViewsInLayout();
                                     ArrayList<Map<String, Object>> data = new ArrayList<Map<String, Object>>();
                                     Map<String, Object> m;
