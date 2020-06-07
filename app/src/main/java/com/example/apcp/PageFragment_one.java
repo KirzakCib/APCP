@@ -360,9 +360,9 @@ public class PageFragment_one extends Fragment {
 //                                nameCoin.setText(valuteCBR.getName());
 //                                nominalCoin.append(" " + valuteCBR.getNominal());
                                     // maniCoin.append(" " + String.valueOf(valuteCBR.getValue()).replaceAll(",", ".") + " " + Html.fromHtml("&#x20bd"));
-                                    double h, d;
-                                    h = 100 - ((Double.valueOf(mani_1[k].replaceAll(",", ".")) / Integer.parseInt(nomi_1[k])) / ((Double.valueOf(valuteCBR.getValue().replaceAll(",", ".")) / nominal) / 100));
-                                    d = 100 - ((Double.valueOf(mani_2[k].replaceAll(",", ".")) / Integer.parseInt(nomi_2[k])) / ((Double.valueOf(valuteCBR.getValue().replaceAll(",", ".")) / nominal) / 100));
+
+                                    double h = 100 - ((Double.valueOf(mani_1[k].replaceAll(",", ".")) / Integer.parseInt(nomi_1[k])) / ((Double.valueOf(valuteCBR.getValue().replaceAll(",", ".")) / nominal) / 100));
+                                    double d = 100 - ((Double.valueOf(mani_2[k].replaceAll(",", ".")) / Integer.parseInt(nomi_2[k])) / ((Double.valueOf(valuteCBR.getValue().replaceAll(",", ".")) / nominal) / 100));
                                     if (h < 0) {
                                         m.put(TEXT_VAL24, " - " + String.valueOf(h).substring(1, 5) + " %");
 //                                    mani24h.append(" - " + String.valueOf(h).substring(1, 5) + " %");

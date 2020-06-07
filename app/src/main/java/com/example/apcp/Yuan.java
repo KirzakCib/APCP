@@ -30,10 +30,9 @@ import retrofit2.converter.simplexml.SimpleXmlConverterFactory;
 public class Yuan extends AppCompatActivity {
 
     static final String BASE_URL = "http://www.cbr.ru/scripts/";
-    Double[] val = new Double[150];
-    String[] dat = new String[150];
-
-    String[] valDol = new String[150];
+    Double[] val = new Double[9];
+    String[] dat = new String[9];
+    String[] valDol = new String[9];
     Toast toast;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,8 +95,16 @@ public class Yuan extends AppCompatActivity {
 
             Call<ValuteParser> call2 = parserXML.valueParser(sdf.format(calendar.getTime()), sdf.format(calendar1.getTime()), "R01375");
 
-            make1(call1);
-            make2(call2);
+//            make1(call1);
+//            make2(call2);
+            try {
+                make1(call1);
+                Thread.sleep(1000);
+                make2(call2);
+            } catch (Exception e) {
+            }
+
+
         }
 
 //        GraphView graph = new GraphView(this);
@@ -140,10 +147,10 @@ public class Yuan extends AppCompatActivity {
 
                     ValuteParser rss = response.body();
                     int k =0;
-                    int nominal;
                     for(ValPars valPars : rss.getValutePars()){
-                        nominal = Integer.parseInt(valPars.getNominal());
-                        val[k] = Double.valueOf(valPars.getValue().replaceAll(",", ".")) / nominal;
+                        if(k >= 9)
+                            continue;
+                        val[k] = Double.valueOf(valPars.getValue().replaceAll(",", ".")) / Double.valueOf(valPars.getNominal());
                         dat[k] = valPars.getDate().substring(0,2);
                         k++;
                     }
@@ -201,6 +208,8 @@ public class Yuan extends AppCompatActivity {
                     ValuteParser rss = response.body();
                     int k =0;
                     for(ValPars valPars : rss.getValutePars()){
+                        if(k >= 9)
+                            continue;
                         valDol[k] = valPars.getValue();
                         k++;
                     }
@@ -231,10 +240,10 @@ public class Yuan extends AppCompatActivity {
 
                     ValuteParser rss = response.body();
                     int k =0;
-                    int nominal;
                     for(ValPars valPars : rss.getValutePars()){
-                        nominal = Integer.parseInt(valPars.getNominal());
-                        val[k] = Double.valueOf(valPars.getValue().replaceAll(",", ".")) / nominal;
+                        if(k >= 9)
+                            continue;
+                        val[k] = Double.valueOf(valPars.getValue().replaceAll(",", ".")) /Double.valueOf(valPars.getNominal());
                        // val[k] = Double.valueOf(valPars.getValue().replaceAll(",", "."));
                         dat[k] = valPars.getDate().substring(0,2);
                         k++;
