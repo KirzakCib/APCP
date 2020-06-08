@@ -30,9 +30,9 @@ import retrofit2.converter.simplexml.SimpleXmlConverterFactory;
 public class Yuan extends AppCompatActivity {
 
     static final String BASE_URL = "http://www.cbr.ru/scripts/";
-    Double[] val = new Double[9];
-    String[] dat = new String[9];
-    String[] valDol = new String[9];
+    Double[] val = new Double[90];
+    String[] dat = new String[90];
+    String[] valDol = new String[90];
     Toast toast;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -148,8 +148,8 @@ public class Yuan extends AppCompatActivity {
                     ValuteParser rss = response.body();
                     int k =0;
                     for(ValPars valPars : rss.getValutePars()){
-                        if(k >= 9)
-                            continue;
+//                        if(k >= 9)
+//                            continue;
                         val[k] = Double.valueOf(valPars.getValue().replaceAll(",", ".")) / Double.valueOf(valPars.getNominal());
                         dat[k] = valPars.getDate().substring(0,2);
                         k++;
@@ -208,8 +208,8 @@ public class Yuan extends AppCompatActivity {
                     ValuteParser rss = response.body();
                     int k =0;
                     for(ValPars valPars : rss.getValutePars()){
-                        if(k >= 9)
-                            continue;
+//                        if(k >= 9)
+//                            continue;
                         valDol[k] = valPars.getValue();
                         k++;
                     }
@@ -241,8 +241,8 @@ public class Yuan extends AppCompatActivity {
                     ValuteParser rss = response.body();
                     int k =0;
                     for(ValPars valPars : rss.getValutePars()){
-                        if(k >= 9)
-                            continue;
+//                        if(k >= 9)
+//                            continue;
                         val[k] = Double.valueOf(valPars.getValue().replaceAll(",", ".")) /Double.valueOf(valPars.getNominal());
                        // val[k] = Double.valueOf(valPars.getValue().replaceAll(",", "."));
                         dat[k] = valPars.getDate().substring(0,2);

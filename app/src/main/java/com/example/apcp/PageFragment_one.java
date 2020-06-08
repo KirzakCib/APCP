@@ -455,30 +455,30 @@ public class PageFragment_one extends Fragment {
                                     // maniCoin.append(" " + String.valueOf(valuteCBR.getValue()).replaceAll(",", ".") + " " + Html.fromHtml("&#x20bd"));
                                     double h, d;
                                     if(k != 1) {
-                                        h =  (((Double.valueOf(mani_1[k].replaceAll(",", ".")) / Integer.parseInt(nomi_1[k])) / ((Double.valueOf(mani_1[1].replaceAll(",", ".")) / nominal))/ ((Double.parseDouble(String.valueOf(valuteCBR.getValue()).replaceAll(",", ".")) / nominal) / dollar)) / 100);
-                                        d =  (((Double.valueOf(mani_2[k].replaceAll(",", ".")) / Integer.parseInt(nomi_2[k])) / ((Double.valueOf(mani_2[1].replaceAll(",", ".")) / nominal))/ ((Double.parseDouble(String.valueOf(valuteCBR.getValue()).replaceAll(",", ".")) / nominal) / dollar)) / 100);
+                                        h =((Double.valueOf(mani_1[k].replaceAll(",", ".")) / Integer.parseInt(nomi_1[k])/ ((Double.valueOf(mani_1[1].replaceAll(",", ".")))))/ (((Double.parseDouble(String.valueOf(valuteCBR.getValue()).replaceAll(",", ".")) / nominal) / dollar) / 100)) - 100;
+                                        d =((Double.valueOf(mani_2[k].replaceAll(",", ".")) / Integer.parseInt(nomi_2[k]) / ((Double.valueOf(mani_2[1].replaceAll(",", ".")))))/ (((Double.parseDouble(String.valueOf(valuteCBR.getValue()).replaceAll(",", ".")) / nominal) / dollar) / 100)) - 100;
                                     }else{
-                                        h = 100 - (1 / (Double.valueOf(mani_1[1].replaceAll(",", ".")) / nominal)) / (1 / (Double.parseDouble(String.valueOf(valuteCBR.getValue()).replaceAll(",", ".")) / nominal));
-                                        d = 100 - (1 / (Double.valueOf(mani_2[1].replaceAll(",", ".")) / nominal)) / (1 / (Double.parseDouble(String.valueOf(valuteCBR.getValue()).replaceAll(",", ".")) / nominal));
+                                        h =100 - (Double.valueOf(mani_1[k].replaceAll(",", "."))) / (Double.parseDouble(valuteCBR.getValue().replaceAll(",", ".")) / 100);
+                                        d =100 - (Double.valueOf(mani_2[k].replaceAll(",", "."))) / (Double.parseDouble(valuteCBR.getValue().replaceAll(",", ".")) / 100);
                                     }
 
-                                    if (h < 0) {
-                                        m.put(TEXT_VAL24, " - " + String.valueOf(h).substring(1, 5) + " %");
+                                    if (h > 0) {
+                                        m.put(TEXT_VAL24, " - " + String.valueOf(h).substring(0,5)+ " %");
 //                                    mani24h.append(" - " + String.valueOf(h).substring(1, 5) + " %");
 //                                    mani24h.setTextColor(Color.RED);
                                     }
-                                    if (d < 0) {
-                                        m.put(TEXT_VAL7d, " - " + String.valueOf(d).substring(1, 5) + " %");
+                                    if (d > 0) {
+                                        m.put(TEXT_VAL7d, " - " + String.valueOf(d).substring(0,5) + " %");
 //                                    mani7d.append(" - " + String.valueOf(d).substring(1, 5) + " %");
 //                                    mani7d.setTextColor(Color.RED);
                                     }
-                                    if (h > 0) {
-                                        m.put(TEXT_VAL24, " + " + String.valueOf(h).substring(0, 4) + " %");
+                                    if (h < 0) {
+                                        m.put(TEXT_VAL24, " + " + String.valueOf(h).substring(1, 6) + " %");
 //                                    mani24h.append(" + " + String.valueOf(h).substring(0, 4) + " %");
 //                                    mani24h.setTextColor(Color.GREEN);
                                     }
-                                    if (d > 0) {
-                                        m.put(TEXT_VAL7d, " + " + String.valueOf(d).substring(0, 4) + " %");
+                                    if (d < 0) {
+                                        m.put(TEXT_VAL7d, " + " + String.valueOf(d).substring(1,6) + " %");
 //                                    mani7d.append(" + " + String.valueOf(d).substring(0, 4) + " %");
 //                                    mani7d.setTextColor(Color.GREEN);
                                     }

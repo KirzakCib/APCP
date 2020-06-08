@@ -34,10 +34,10 @@ import retrofit2.converter.simplexml.SimpleXmlConverterFactory;
 
 public class Sterlink extends AppCompatActivity {
     static final String BASE_URL = "http://www.cbr.ru/scripts/";
-    Double[] val = new Double[9];
-    String[] valDol = new String[9];
+    Double[] val = new Double[90];
+    String[] valDol = new String[90];
     Double dol;
-    String[] dat = new String[9];
+    String[] dat = new String[90];
     Toast toast;
     int nom;
     @Override
@@ -152,8 +152,8 @@ public class Sterlink extends AppCompatActivity {
                     ValuteParser rss = response.body();
                     int k =0;
                     for(ValPars valPars : rss.getValutePars()){
-                        if(k >= 9)
-                            continue;
+//                        if(k >= 10)
+//                            continue;
                         val[k] = Double.valueOf(valPars.getValue().replaceAll(",", ".")) / Double.valueOf(valPars.getNominal());
                         dat[k] = valPars.getDate().substring(0,2);
                         k++;
@@ -178,7 +178,7 @@ public class Sterlink extends AppCompatActivity {
 //                    graph.getGridLabelRenderer().setLabelFormatter(staticLabelsFormatter);
 
                     // set manual Y bounds
-                    staticLabelsFormatter.setHorizontalLabels(new String[] {dat[k-9],dat[k-8],dat[k-7],dat[k-6],dat[k-5],dat[k-4],dat[k-3],dat[k-2],dat[k-1],});
+                    staticLabelsFormatter.setHorizontalLabels(new String[] {dat[k-9],dat[k-8],dat[k-7],dat[k-6],dat[k-5],dat[k-4],dat[k-3],dat[k-2],dat[k-1]});
                     graph.getGridLabelRenderer().setLabelFormatter(staticLabelsFormatter);
                     graph.getViewport().setScrollable(true);
 
@@ -212,8 +212,8 @@ public class Sterlink extends AppCompatActivity {
                     ValuteParser rss = response.body();
                     int k =0;
                     for(ValPars valPars : rss.getValutePars()){
-                        if(k >= 9)
-                            continue;
+//                        if(k >= 9)
+//                            continue;
                         nom = Integer.parseInt(valPars.getNominal());
                         valDol[k] = valPars.getValue();
                         k++;
@@ -246,8 +246,8 @@ public class Sterlink extends AppCompatActivity {
                     ValuteParser rss = response.body();
                     int k =0;
                     for(ValPars valPars : rss.getValutePars()){
-                        if(k >= 9)
-                            continue;
+//                        if(k >= 9)
+//                            continue;
                         val[k] = Double.valueOf(valPars.getValue().replaceAll(",", ".")) / Double.valueOf(valPars.getNominal());
                         dat[k] = valPars.getDate().substring(0,2);
                         k++;
